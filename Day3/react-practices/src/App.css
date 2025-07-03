@@ -1,0 +1,27 @@
+.app-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #1f2937; /* bg-gray-900 */
+  min-height: 100vh;
+}
+
+/* Container riêng cho từng phần */
+.section-container {
+  width: 400px;
+  height: 1000px;
+  background-color: #f3f4f6; /* bg-gray-100 */
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .app-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+}
