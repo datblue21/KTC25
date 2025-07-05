@@ -1,0 +1,51 @@
+.articles_list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.article_item {
+    width: calc((100% - 60px) / 4);
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.article_discount {
+    position: absolute;
+    top: center;
+    background-color: orange;
+    color: white;
+    font-size: 14px;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.article_thumbnail {
+    width: 100%;
+    max-height: 160px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+.article_thumbnail img{
+    width: 100%;
+    height: auto;
+}
+.article_name {
+    font-size: 14px;
+    color: #222;
+}
+.article_extra {
+    font-size: 12px;
+}
+.article_extra .article_price {
+    color: #b10000;
+}
+
+.article_extra .old {
+    text-decoration: line-through;
+    color: #888;
+  color: gray;
+  font-size: 13px;
+  margin-left: 5px;
+}

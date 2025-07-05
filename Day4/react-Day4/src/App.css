@@ -1,0 +1,49 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: "Lato", sans-serif;
+  line-height: 1.4;
+  font-size: 14px;
+  color: #111;
+}
+
+a{
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section{
+  background: #fff;
+  padding: 10px;
+}
+.section .section_header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+.section .section_header .section_title{
+  text-transform: uppercase;
+  color: #333;
+}
+
+.section .section_header .section_extra{
+  display: flex;
+  column-gap: 15px;
+  align-items: center;
+}
+
+.section .section_header .section_extra a{
+  color: #333;
+}
+.section .section_header .section_extra a:hover{
+  font-weight: bold;
+}

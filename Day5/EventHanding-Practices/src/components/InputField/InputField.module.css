@@ -1,0 +1,23 @@
+.input-field-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.input-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-row p {
+  margin: 0;
+}
+
+.input-row input {
+  padding: 5px;
+}
+
+.result-text {
+  margin-top: 16px;
+}
