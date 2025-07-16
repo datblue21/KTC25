@@ -1,41 +1,68 @@
 import Navigation from "@/components/navigation"
 import TaskCard from "@/components/task-card"
 import Link from "next/link"
+import { Task, TaskApiResponse, TasksApiResponse } from "@/app/types"
+import { tasks } from "../../../data/tasks"
 
 // ISR: Incremental Static Regeneration
 // Trang được tái tạo sau một khoảng thời gian nhất định
-async function getTask(id: string) {
-  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
+async function getTask(id: string): Promise<TaskApiResponse> {
+  // Try to fetch from API, fallback to static data during build
+  try {
+    const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
 
-  const res = await fetch(`${baseUrl}/api/tasks/${id}`, {
-    next: { revalidate: 10 }, // Revalidate sau 10 giây
-  })
+    const res = await fetch(`${baseUrl}/api/tasks/${id}`, {
+      next: { revalidate: 10 }, // Revalidate sau 10 giây
+    })
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch task")
+    if (!res.ok) {
+      throw new Error("Failed to fetch task")
+    }
+
+    return res.json()
+  } catch {
+    // Fallback to static data during build
+    const task = tasks.find((t) => t.id === Number.parseInt(id))
+    if (!task) {
+      throw new Error("Task not found")
+    }
+    return {
+      task,
+      timestamp: new Date().toISOString(),
+      renderType: "Static Data (Build Time)",
+    }
   }
-
-  return res.json()
 }
 
-async function getAllTasks() {
-  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
+async function getAllTasks(): Promise<TasksApiResponse> {
+  // Try to fetch from API, fallback to static data during build
+  try {
+    const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
 
-  const res = await fetch(`${baseUrl}/api/tasks`, {
-    next: { revalidate: 10 },
-  })
+    const res = await fetch(`${baseUrl}/api/tasks`, {
+      next: { revalidate: 10 },
+    })
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch tasks")
+    if (!res.ok) {
+      throw new Error("Failed to fetch tasks")
+    }
+
+    return res.json()
+  } catch {
+    // Fallback to static data during build
+    return {
+      tasks,
+      timestamp: new Date().toISOString(),
+      renderType: "Static Data (Build Time)",
+    }
   }
-
-  return res.json()
 }
 
-export default async function TaskISRPage({ params }: { params: { id: string } }) {
-  const [taskData, allTasksData] = await Promise.all([getTask(params.id), getAllTasks()])
+export default async function TaskISRPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params
+  const [taskData, allTasksData] = await Promise.all([getTask(resolvedParams.id), getAllTasks()])
 
-  const otherTasks = allTasksData.tasks.filter((task: any) => task.id !== Number.parseInt(params.id))
+  const otherTasks = allTasksData.tasks.filter((task: Task) => task.id !== Number.parseInt(resolvedParams.id))
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -79,7 +106,7 @@ export default async function TaskISRPage({ params }: { params: { id: string } }
                 key={id}
                 href={`/task-isr/${id}`}
                 className={`px-4 py-2 rounded-md font-medium transition-colors ${
-                  id === Number.parseInt(params.id)
+                  id === Number.parseInt(resolvedParams.id)
                     ? "bg-purple-600 text-white"
                     : "bg-white text-purple-600 border border-purple-600 hover:bg-purple-50"
                 }`}
@@ -94,7 +121,7 @@ export default async function TaskISRPage({ params }: { params: { id: string } }
         <div>
           <h3 className="text-xl font-semibold mb-4">Các Task Khác</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {otherTasks.map((task: any) => (
+            {otherTasks.map((task: Task) => (
               <Link key={task.id} href={`/task-isr/${task.id}`}>
                 <TaskCard task={task} renderType="ISR" />
               </Link>

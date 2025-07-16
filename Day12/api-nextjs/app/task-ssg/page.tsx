@@ -1,18 +1,30 @@
 import Navigation from "@/components/navigation"
 import TaskCard from "@/components/task-card"
+import { Task, TasksApiResponse } from "@/app/types"
+import { tasks } from "../../data/tasks"
 
 // SSG: Static Site Generation
 // Data được fetch tại build time
-async function getTasks() {
-  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
+async function getTasks(): Promise<TasksApiResponse> {
+  // Try to fetch from API, fallback to static data during build
+  try {
+    const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
 
-  const res = await fetch(`${baseUrl}/api/tasks`)
+    const res = await fetch(`${baseUrl}/api/tasks`)
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch tasks")
+    if (!res.ok) {
+      throw new Error("Failed to fetch tasks")
+    }
+
+    return res.json()
+  } catch {
+    // Fallback to static data during build
+    return {
+      tasks,
+      timestamp: new Date().toISOString(),
+      renderType: "Static Data (Build Time)",
+    }
   }
-
-  return res.json()
 }
 
 export default async function TaskSSGPage() {
@@ -44,7 +56,7 @@ export default async function TaskSSGPage() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.tasks.map((task: any) => (
+          {data.tasks.map((task: Task) => (
             <TaskCard key={task.id} task={task} renderType="SSG" />
           ))}
         </div>

@@ -1,9 +1,10 @@
 import Navigation from "@/components/navigation"
 import TaskCard from "@/components/task-card"
+import { Task, TasksApiResponse } from "@/app/types"
 
 // SSR: Server-Side Rendering
 // Data được fetch trên server cho mỗi request
-async function getTasks() {
+async function getTasks(): Promise<TasksApiResponse> {
   const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
 
   const res = await fetch(`${baseUrl}/api/tasks`, {
@@ -46,7 +47,7 @@ export default async function TaskSSRPage() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.tasks.map((task: any) => (
+          {data.tasks.map((task: Task) => (
             <TaskCard key={task.id} task={task} renderType="SSR" />
           ))}
         </div>
