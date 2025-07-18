@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { hasPermissions, isAllowAccessForRoles } from "../auth.util";
 import { useAuthStore } from "../auth.store";
-import { PermissionCheckMode } from "../auth.type";
+import type { PermissionCheckMode } from "../auth.type";
 
 /**
  * Permissions-based HOC
@@ -22,7 +22,7 @@ const withPermissions = (
         return <Navigate to="/login" replace />;
       }
       // Root, admin users bypass permission checks
-      if (isAllowAccessForRoles(user.roles, ['root', 'admin'])) {
+      if (isAllowAccessForRoles(['root', 'admin'])) {
         return <Component {...props} />;
       }
       const hasRequiredPermissions = hasPermissions(permissions, mode);

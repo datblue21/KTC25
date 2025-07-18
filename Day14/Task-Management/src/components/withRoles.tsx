@@ -18,7 +18,7 @@ const withRoles = (requiredRoles: string[]) => {
         }
         
         // Root users bypass role checks
-        if (isAllowAccessForRoles(user.roles, ['root', 'admin'])) {
+        if (isAllowAccessForRoles(['root', 'admin'])) {
           return <Component {...props} />;
         }
         

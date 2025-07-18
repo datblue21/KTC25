@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { hasPermissions, hasAnyRoles, isAllowAccessForRoles } from "../auth.util";
 import { useAuthStore } from "../auth.store";
-import { PermissionCheckMode } from "../auth.type";
+import type { PermissionCheckMode } from "../auth.type";
 
 /**
  * Combined role and permission HOC
@@ -25,7 +25,7 @@ const withRolesAndPermissions = (
         }
         
         // Root users bypass all checks
-        if (isAllowAccessForRoles(user.roles, ['root', 'admin'])) {
+        if (isAllowAccessForRoles(['root', 'admin'])) {
           return <Component {...props} />;
         }
         

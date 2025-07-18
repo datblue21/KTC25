@@ -19,7 +19,7 @@ export const RolesGuard: React.FC<{
   }
 
   // Root users bypass role checks
-  if (isAllowAccessForRoles(user.roles, ['root', 'admin'])) {
+  if (isAllowAccessForRoles(['root', 'admin'])) {
     return <>{children}</>;
   }
 

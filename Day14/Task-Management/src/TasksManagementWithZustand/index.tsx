@@ -2,7 +2,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Login from '../pages/Login';
-import AccessDenied from '../pages/AccessDenied';
 import Tasks from '../pages/Tasks';
 import Customer from '../pages/Customer';
 import PrivateRoute from '../components/PrivateRoute';

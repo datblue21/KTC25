@@ -1,6 +1,6 @@
 import { hasPermissions, isAllowAccessForRoles } from "../auth.util";
 import { useAuthStore } from "../auth.store";
-import { PermissionCheckMode } from "../auth.type";
+import type { PermissionCheckMode } from "../auth.type";
 
 /**
  * UI Components for permission-based rendering
@@ -21,7 +21,7 @@ const PermissionsGuard: React.FC<{
   }
 
   // Root and admin users bypass role checks
-  if (isAllowAccessForRoles(user.roles, ["root", "admin"])) {
+  if (isAllowAccessForRoles(["root", "admin"])) {
     return <>{children}</>;
   }
 

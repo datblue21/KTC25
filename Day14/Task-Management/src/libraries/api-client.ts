@@ -3,6 +3,6 @@ import apiClientAdvanced from './api-client-advanced';
 
 const mode: 'simple' | 'advanced' = 'simple';
 
-const apiClient = mode === 'advanced' ? apiClientSimple : apiClientAdvanced; // Default export for simplicity
+const apiClient = mode === 'simple' ? apiClientSimple : apiClientAdvanced; // Fixed logic
 
 export { apiClient }; // Export both for flexibility
